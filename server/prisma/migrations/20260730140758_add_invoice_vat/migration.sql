@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "clients" ADD COLUMN     "vatRate" DECIMAL(5,2) NOT NULL DEFAULT 20;
+
+-- AlterTable
+ALTER TABLE "invoices" ADD COLUMN     "totalWithVat" DECIMAL(12,2) NOT NULL DEFAULT 0,
+ADD COLUMN     "vatAmount" DECIMAL(12,2) NOT NULL DEFAULT 0,
+ADD COLUMN     "vatRate" DECIMAL(5,2) NOT NULL DEFAULT 20;

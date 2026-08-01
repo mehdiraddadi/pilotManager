@@ -1,0 +1,269 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  CONSULTANT
+}
+
+enum ProjectStatus {
+  PROSPECT
+  EN_COURS
+  EN_PAUSE
+  TERMINE
+  ANNULE
+}
+
+// Ma société (l'ESN elle-même, l'entité qui exploite ce BoondManager). Singleton applicatif :
+// un seul enregistrement, à créer avant de pouvoir créer un client, un projet, etc.
+model Company {
+  id        String   @id @default(uuid())
+  name      String
+  legalForm String?
+  siren     String?
+  siret     String?
+  vatNumber String?
+  address   String?
+  // Coordonnées bancaires affichées dans le bloc "Informations de paiement" des factures PDF.
+  iban      String?
+  bic       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  contacts  CompanyContact[]
+
+  @@map("company")
+}
+
+model CompanyContact {
+  id        String   @id @default(uuid())
+  firstName String
+  lastName  String
+  email     String?
+  phone     String?
+  mobile    String?
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("company_contacts")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         Role     @default(CONSULTANT)
+  profile      String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  managedProjects   Project[]        @relation("ProjectManager")
+  assignments       Assignment[]
+  monthlyTimesheets MonthlyTimesheet[]
+
+  @@map("users")
+}
+
+model Client {
+  id        String   @id @default(uuid())
+  name      String
+  siret     String?
+  vatNumber String?
+  address   String?
+  logo      String?
+  // Taux de TVA par défaut (%) appliqué aux factures générées pour ce client.
+  vatRate   Decimal  @default(20) @db.Decimal(5, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  contacts  Contact[]
+  projects  Project[]
+  invoices  Invoice[]
+
+  @@map("clients")
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  firstName String
+  lastName  String
+  email     String?
+  phone     String?
+  role      String?
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("contacts")
+}
+
+model Project {
+  id           String        @id @default(uuid())
+  name         String
+  description  String?
+  status       ProjectStatus @default(PROSPECT)
+  startDate    DateTime?
+  endDate      DateTime?
+  dailyRate    Decimal?      @db.Decimal(10, 2)
+
+  clientId     String
+  client       Client        @relation(fields: [clientId], references: [id])
+
+  managerId    String?
+  manager      User?         @relation("ProjectManager", fields: [managerId], references: [id], onDelete: SetNull)
+
+  intermediaryId String?
+  intermediary   Intermediary? @relation(fields: [intermediaryId], references: [id], onDelete: SetNull)
+
+  assignments  Assignment[]
+  contacts     ProjectContact[]
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("projects")
+}
+
+// Contact propre à une mission (ex: sponsor, référent technique côté client sur ce projet précis),
+// distinct des contacts génériques enregistrés au niveau du Client.
+model ProjectContact {
+  id        String   @id @default(uuid())
+  firstName String
+  lastName  String
+  role      String?
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("project_contacts")
+}
+
+// Société de service (SSII/ESN, portage...) qui s'intercale entre le consultant et le client final
+// sur certaines missions. Le CRA est alors adressé à l'intermédiaire plutôt qu'au client.
+model Intermediary {
+  id          String   @id @default(uuid())
+  name        String
+  contactName String?
+  phone       String?
+  email       String?
+  logo        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  projects    Project[]
+
+  @@map("intermediaries")
+}
+
+model Assignment {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  startDate  DateTime
+  endDate    DateTime?
+  rate       Decimal? @db.Decimal(10, 2)
+  createdAt  DateTime @default(now())
+
+  timeEntries TimeEntry[]
+  invoiceLines InvoiceLine[]
+
+  @@unique([userId, projectId, startDate])
+  @@map("assignments")
+}
+
+enum TimeEntryType {
+  WORKED   // Sur site / production facturable
+  INTERNE  // Activité interne non facturable
+  RTT
+  CP
+  MALADIE
+  AUTRE
+}
+
+model TimeEntry {
+  id           String        @id @default(uuid())
+  assignmentId String
+  assignment   Assignment    @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  date         DateTime      @db.Date
+  type         TimeEntryType @default(WORKED)
+  quantity     Decimal       @db.Decimal(3, 2) // 1 = jour plein, 0.5 = demi-journée
+  comment      String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([assignmentId, date])
+  @@map("time_entries")
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+}
+
+model Invoice {
+  id          String        @id @default(uuid())
+  number      String        @unique
+  clientId    String
+  client      Client        @relation(fields: [clientId], references: [id])
+  periodMonth DateTime      @db.Date
+  status      InvoiceStatus @default(DRAFT)
+  // Montant HT (somme des lignes). Le taux/montant de TVA sont figés au moment de la génération
+  // (indépendants d'un changement ultérieur du taux par défaut du client).
+  totalAmount Decimal       @db.Decimal(12, 2)
+  vatRate     Decimal       @default(20) @db.Decimal(5, 2)
+  vatAmount   Decimal       @default(0) @db.Decimal(12, 2)
+  totalWithVat Decimal      @default(0) @db.Decimal(12, 2)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  lines InvoiceLine[]
+
+  @@map("invoices")
+}
+
+model InvoiceLine {
+  id           String     @id @default(uuid())
+  invoiceId    String
+  invoice      Invoice    @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  assignmentId String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  description  String
+  quantity     Decimal    @db.Decimal(6, 2)
+  unitPrice    Decimal    @db.Decimal(10, 2)
+  amount       Decimal    @db.Decimal(12, 2)
+
+  @@map("invoice_lines")
+}
+
+enum TimesheetStatus {
+  DRAFT
+  VALIDATED
+  REJECTED
+}
+
+model MonthlyTimesheet {
+  id        String          @id @default(uuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  month     DateTime        @db.Date // premier jour du mois
+  status    TimesheetStatus @default(DRAFT)
+  comment   String?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@unique([userId, month])
+  @@map("monthly_timesheets")
+}

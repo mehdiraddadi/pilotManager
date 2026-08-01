@@ -1,0 +1,75 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: pilotmanager-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pilotmanager
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pilotmanager"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailcatcher:
+    image: schickling/mailcatcher
+    container_name: pilotmanager-mailcatcher
+    restart: unless-stopped
+    ports:
+      - "1080:1080" # Interface web pour consulter les emails envoyés en dev
+      - "1025:1025" # Port SMTP
+
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: pilotmanager-server
+    restart: unless-stopped
+    env_file:
+      - server/.env
+    environment:
+      # Ces valeurs surchargent celles de server/.env pour pointer vers
+      # les autres conteneurs du réseau Docker plutôt que vers "localhost".
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/pilotmanager?schema=public
+      CLIENT_URL: http://localhost:5173
+      SMTP_HOST: mailcatcher
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./server:/repo/server
+      - server_node_modules:/repo/server/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+      mailcatcher:
+        condition: service_started
+    # Régénère le client Prisma (au cas où le schéma ait changé depuis le
+    # build de l'image), applique les migrations, puis lance le serveur dev.
+    command: sh -c "npx prisma generate && npx prisma migrate deploy && npm run dev"
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    container_name: pilotmanager-client
+    restart: unless-stopped
+    environment:
+      VITE_API_TARGET: http://server:4000
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/repo/client
+      - client_node_modules:/repo/client/node_modules
+    depends_on:
+      - server
+
+volumes:
+  db_data:
+  server_node_modules:
+  client_node_modules:
