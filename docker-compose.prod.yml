@@ -1,0 +1,57 @@
+# Nom de projet Compose dédié : évite toute collision de noms de conteneurs,
+# de réseau, de volumes ET de tags d'images avec docker-compose.yml (dev),
+# y compris si les deux sont lancés depuis le même dossier / hôte.
+name: pilotmanager-prod
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: pilotmanager-prod-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    # Pas de port exposé sur l'hôte : uniquement accessible depuis les
+    # autres conteneurs du réseau Docker Compose.
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile.prod
+    image: pilotmanager-server-prod
+    container_name: pilotmanager-prod-server
+    restart: unless-stopped
+    env_file:
+      - server/.env.production
+    environment:
+      # Surcharge le DATABASE_URL de server/.env.production pour pointer
+      # vers le conteneur "db" plutôt que vers localhost.
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+    # Pas de port exposé sur l'hôte : l'API n'est joignable que depuis le
+    # conteneur "client" (Nginx), via le réseau interne Docker Compose.
+    depends_on:
+      db:
+        condition: service_healthy
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile.prod
+    image: pilotmanager-client-prod
+    container_name: pilotmanager-prod-client
+    restart: unless-stopped
+    ports:
+      - "${CLIENT_PORT:-8080}:80"
+    depends_on:
+      - server
+
+volumes:
+  db_data:

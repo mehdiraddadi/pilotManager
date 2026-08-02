@@ -225,7 +225,7 @@ function renderInvoicePdf(
         doc.font('Helvetica').fontSize(9).fillColor('#0f172a');
         const descHeight = doc.heightOfString(description, { width: colW.description - 8 });
         doc.text(description, colX.description + 8, y, { width: colW.description - 8 });
-        doc.text(1, colX.qty, y, { width: colW.qty - 8, align: 'right' });
+        doc.text('1', colX.qty, y, { width: colW.qty - 8, align: 'right' });
         doc.text(formatEurosNum(Number(line.amount)), colX.unitPrice, y, { width: colW.unitPrice - 8, align: 'right' });
         doc.text(`${Number(invoice.vatRate)} %`, colX.vat, y, { width: colW.vat - 8, align: 'right' });
         doc.font('Helvetica-Bold').text(formatEurosNum(Number(line.amount)), colX.total, y, { width: colW.total - 8, align: 'right' });
