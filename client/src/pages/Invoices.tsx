@@ -210,7 +210,7 @@ export function Invoices() {
                     <select
                         value={clientId}
                         onChange={(e) => handleClientChange(e.target.value)}
-                        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2"
+                        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2 text-slate-900 placeholder:text-slate-400"
                     >
                         <option value="">Client...</option>
                         {clients?.map((c) => (
@@ -223,7 +223,7 @@ export function Invoices() {
                         type="month"
                         value={month}
                         onChange={(e) => setMonth(e.target.value)}
-                        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
                     />
                     <input
                         value={vatRate}
@@ -234,7 +234,7 @@ export function Invoices() {
                         step="0.1"
                         placeholder="TVA (%)"
                         title="Pré-rempli avec le taux par défaut du client, modifiable pour cette facture"
-                        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
                     />
                     <button
                         type="submit"

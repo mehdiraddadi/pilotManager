@@ -149,19 +149,19 @@ function ProjectContacts({ project, canEdit }: { project: Project; canEdit: bool
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Prénom"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <input
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Nom"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <input
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
                 placeholder="Fonction"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <div className="flex gap-2">
                 <button
@@ -323,12 +323,12 @@ export function Projects() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Nom du projet"
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2 text-slate-900 placeholder:text-slate-400"
           />
           <select
             value={clientId}
             onChange={(e) => setClientId(e.target.value)}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
           >
             <option value="">Client...</option>
             {clients?.map((c) => (
@@ -340,7 +340,7 @@ export function Projects() {
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as ProjectStatus)}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
           >
             {Object.entries(STATUS_LABELS).map(([value, label]) => (
               <option key={value} value={value}>
@@ -355,12 +355,12 @@ export function Projects() {
             min="0"
             step="0.01"
             placeholder="TJM (€)"
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
           />
           <select
             value={intermediaryId}
             onChange={(e) => setIntermediaryId(e.target.value)}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2 text-slate-900 placeholder:text-slate-400"
           >
             <option value="">Intermédiaire (aucun)</option>
             {intermediaries?.map((i) => (

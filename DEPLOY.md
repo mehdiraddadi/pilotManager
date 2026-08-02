@@ -146,3 +146,7 @@ cd /opt/pilotManager
    avec certificat Let's Encrypt sur le vhost du sous-domaine. Dites-le moi
    quand vous aurez le domaine, je vous prépare cette étape.
 3. Changez le mot de passe admin créé par le seed (étape 5).
+
+
+
+docker compose -f docker-compose.prod.yml --env-file .env.prod ps

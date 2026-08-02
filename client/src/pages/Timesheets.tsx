@@ -338,7 +338,7 @@ export function Timesheets() {
                     <select
                         value={selectedUserId}
                         onChange={(e) => setSelectedUserId(e.target.value)}
-                        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
                     >
                         <option value="">Selectionner un consultant...</option>
                         {users?.map((u) => (
@@ -351,7 +351,7 @@ export function Timesheets() {
                         type="month"
                         value={month}
                         onChange={(e) => setMonth(e.target.value)}
-                        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
                     />
                     {selectedUserId && (
                         <button
@@ -645,7 +645,7 @@ export function Timesheets() {
                             disabled={isLocked}
                             placeholder="Redigez vos commentaires..."
                             rows={3}
-                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 disabled:text-slate-400"
+                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 disabled:text-slate-400 text-slate-900 placeholder:text-slate-400"
                         />
 
                         <div className="mt-4 flex flex-wrap justify-end gap-2">

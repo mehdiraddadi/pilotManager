@@ -155,32 +155,32 @@ function ClientContacts({ client, canEdit }: { client: Client; canEdit: boolean 
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Prénom"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <input
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Nom"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <input
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
                 placeholder="Fonction"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
                 type="email"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <input
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="Téléphone"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <div className="flex gap-2 sm:col-span-5">
                 <button
@@ -346,25 +346,25 @@ export function Clients() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Nom du client"
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2 text-slate-900 placeholder:text-slate-400"
           />
           <input
             value={siret}
             onChange={(e) => setSiret(e.target.value)}
             placeholder="SIRET"
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
           />
           <input
             value={vatNumber}
             onChange={(e) => setVatNumber(e.target.value)}
             placeholder="N° TVA intracommunautaire"
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
           />
           <input
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder="Adresse"
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2 text-slate-900 placeholder:text-slate-400"
           />
           <input
             value={vatRate}
@@ -375,7 +375,7 @@ export function Clients() {
             step="0.1"
             placeholder="TVA (%)"
             title="Taux de TVA par défaut appliqué aux factures de ce client"
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
           />
           <div className="flex items-center gap-3 sm:col-span-4">
             <input

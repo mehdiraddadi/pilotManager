@@ -148,32 +148,32 @@ function CompanyContacts({ company, canEdit }: { company: CompanyType; canEdit: 
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Prénom"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <input
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Nom"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
                 type="email"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <input
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="Téléphone"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <input
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
                 placeholder="Mobile"
-                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
               />
               <div className="flex gap-2 sm:col-span-5">
                 <button
@@ -323,42 +323,42 @@ export function Company() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Raison sociale"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 sm:col-span-2"
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 sm:col-span-2 text-slate-900 placeholder:text-slate-400"
         />
         <input
           disabled={!canEdit}
           value={legalForm}
           onChange={(e) => setLegalForm(e.target.value)}
           placeholder="Forme juridique (ex: SAS)"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50"
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 text-slate-900 placeholder:text-slate-400"
         />
         <input
           disabled={!canEdit}
           value={siren}
           onChange={(e) => setSiren(e.target.value)}
           placeholder="SIREN"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50"
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 text-slate-900 placeholder:text-slate-400"
         />
         <input
           disabled={!canEdit}
           value={siret}
           onChange={(e) => setSiret(e.target.value)}
           placeholder="SIRET"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50"
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 text-slate-900 placeholder:text-slate-400"
         />
         <input
           disabled={!canEdit}
           value={vatNumber}
           onChange={(e) => setVatNumber(e.target.value)}
           placeholder="Numéro de TVA"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50"
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 text-slate-900 placeholder:text-slate-400"
         />
         <input
           disabled={!canEdit}
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           placeholder="Adresse"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50"
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 text-slate-900 placeholder:text-slate-400"
         />
         <input
           disabled={!canEdit}
@@ -366,14 +366,14 @@ export function Company() {
           onChange={(e) => setIban(e.target.value)}
           placeholder="IBAN"
           title="Utilisé dans le bloc « Informations de paiement » des factures PDF"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50"
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 text-slate-900 placeholder:text-slate-400"
         />
         <input
           disabled={!canEdit}
           value={bic}
           onChange={(e) => setBic(e.target.value)}
           placeholder="BIC"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50"
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 text-slate-900 placeholder:text-slate-400"
         />
         {canEdit && (
           <button

@@ -64,7 +64,7 @@ export function AbsenceRequestModal({ open, onClose, onSubmit, submitting }: Abs
                         <select
                             value={type}
                             onChange={(e) => setType(e.target.value as TimeEntryType)}
-                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
                         >
                             {ABSENCE_TYPE_OPTIONS.map((opt) => (
                                 <option key={opt.value} value={opt.value}>
@@ -82,7 +82,7 @@ export function AbsenceRequestModal({ open, onClose, onSubmit, submitting }: Abs
                                 value={startDate}
                                 onChange={(e) => setStartDate(e.target.value)}
                                 required
-                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
                             />
                         </div>
                         <div>
@@ -92,7 +92,7 @@ export function AbsenceRequestModal({ open, onClose, onSubmit, submitting }: Abs
                                 value={endDate}
                                 onChange={(e) => setEndDate(e.target.value)}
                                 required
-                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
                             />
                         </div>
                     </div>
@@ -110,7 +110,7 @@ export function AbsenceRequestModal({ open, onClose, onSubmit, submitting }: Abs
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             rows={2}
-                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
                         />
                     </div>
 
