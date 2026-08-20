@@ -254,7 +254,7 @@ export function Invoices() {
                 <p className="mb-4 rounded-md bg-teal-50 px-4 py-2 text-sm text-teal-700">{feedback}</p>
             )}
 
-            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+            <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
                 <table className="w-full text-sm">
                     <thead className="border-b border-slate-200 bg-slate-50 text-left text-slate-500">
                     <tr>

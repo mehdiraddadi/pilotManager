@@ -13,7 +13,7 @@ export function Dashboard() {
         (CA, taux d'occupation, CRA en attente...) au fur et à mesure du développement.
       </p>
 
-      <div className="mt-8 grid grid-cols-3 gap-4">
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
         {[
           { label: 'Clients actifs', value: '—' },
           { label: 'Projets en cours', value: '—' },

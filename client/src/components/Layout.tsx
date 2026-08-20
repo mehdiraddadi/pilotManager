@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -16,10 +16,39 @@ const navItems = [
 
 export function Layout({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-slate-50 text-slate-900">
-      <aside className="flex w-60 flex-col bg-slate-900 text-slate-200">
+    <div className="flex h-screen flex-col bg-slate-50 text-slate-900 md:flex-row">
+      <header className="flex items-center justify-between bg-slate-900 px-4 py-3 text-white md:hidden">
+        <span className="text-lg font-semibold tracking-tight">PilotMng</span>
+        <button
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-label="Ouvrir le menu"
+          className="rounded-md p-2 hover:bg-slate-800"
+        >
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            {menuOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
+      </header>
+
+      {menuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-slate-900/40 md:hidden"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
+
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 flex w-60 flex-col bg-slate-900 text-slate-200 transition-transform duration-200 ease-in-out md:static md:z-auto md:flex md:translate-x-0 ${
+          menuOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
         <div className="px-5 py-5 text-lg font-semibold tracking-tight text-white">
           PilotMng
         </div>
@@ -29,6 +58,7 @@ export function Layout({ children }: { children: ReactNode }) {
               key={item.to}
               to={item.to}
               end={item.end}
+              onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
                 `block rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                   isActive
@@ -55,7 +85,7 @@ export function Layout({ children }: { children: ReactNode }) {
         </div>
       </aside>
       <main className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-6xl px-8 py-8">{children}</div>
+        <div className="mx-auto max-w-6xl px-4 py-6 sm:px-8 sm:py-8">{children}</div>
       </main>
     </div>
   );

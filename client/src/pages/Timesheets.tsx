@@ -138,6 +138,14 @@ export function Timesheets() {
         queryFn: async () => (await api.get<UserSummary[]>('/users')).data,
     });
 
+    const consultants = useMemo(() => users?.filter((u) => u.role === 'CONSULTANT') ?? [], [users]);
+
+    useEffect(() => {
+        if (!selectedUserId && consultants.length > 0) {
+            setSelectedUserId(consultants[0].id);
+        }
+    }, [consultants, selectedUserId]);
+
     const { data: assignments } = useQuery({
         queryKey: ['assignments', selectedUserId],
         queryFn: async () =>
@@ -341,7 +349,7 @@ export function Timesheets() {
                         className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
                     >
                         <option value="">Selectionner un consultant...</option>
-                        {users?.map((u) => (
+                        {consultants.map((u) => (
                             <option key={u.id} value={u.id}>
                                 {u.firstName} {u.lastName}
                             </option>

@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { CompanySearch } from '../components/CompanySearch';
 import type { Client, Contact } from '../types';
 
 function readFileAsDataUrl(file: File): Promise<string> {
@@ -337,34 +338,51 @@ export function Clients() {
       </div>
 
       {showForm && (
-        <form
-          onSubmit={handleSubmit}
-          className="mb-6 grid grid-cols-1 gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:grid-cols-4"
-        >
+        <>
+          <CompanySearch
+            onSelect={(result) => {
+              setName(result.name);
+              if (result.siret) setSiret(result.siret);
+              if (result.vatNumber) setVatNumber(result.vatNumber);
+              if (result.address) setAddress(result.address);
+            }}
+          />
+          <form
+            onSubmit={handleSubmit}
+            className="mb-6 grid grid-cols-1 gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:grid-cols-4"
+          >
           <input
             autoFocus
+            readOnly
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Nom du client"
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2 text-slate-900 placeholder:text-slate-400"
+            title="Renseigné via la recherche dans l'Annuaire des Entreprises"
+            className="rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2 placeholder:text-slate-400"
           />
           <input
+            readOnly
             value={siret}
             onChange={(e) => setSiret(e.target.value)}
             placeholder="SIRET"
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
+            title="Renseigné via la recherche dans l'Annuaire des Entreprises"
+            className="rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 placeholder:text-slate-400"
           />
           <input
+            readOnly
             value={vatNumber}
             onChange={(e) => setVatNumber(e.target.value)}
             placeholder="N° TVA intracommunautaire"
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 text-slate-900 placeholder:text-slate-400"
+            title="Renseigné via la recherche dans l'Annuaire des Entreprises"
+            className="rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 placeholder:text-slate-400"
           />
           <input
+            readOnly
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder="Adresse"
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2 text-slate-900 placeholder:text-slate-400"
+            title="Renseigné via la recherche dans l'Annuaire des Entreprises"
+            className="rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2 placeholder:text-slate-400"
           />
           <input
             value={vatRate}
@@ -393,14 +411,15 @@ export function Clients() {
           >
             {editingId ? 'Enregistrer les modifications' : 'Créer'}
           </button>
-        </form>
+          </form>
+        </>
       )}
 
       {error && (
         <p className="mb-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-600">{error}</p>
       )}
 
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
         <table className="w-full text-sm">
           <thead className="border-b border-slate-200 bg-slate-50 text-left text-slate-500">
             <tr>

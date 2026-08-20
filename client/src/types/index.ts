@@ -23,6 +23,15 @@ export interface Company {
   contacts?: CompanyContact[];
 }
 
+export interface CompanySearchResult {
+  siren: string;
+  siret: string | null;
+  name: string;
+  legalForm: string | null;
+  address: string | null;
+  vatNumber: string | null;
+}
+
 export interface User {
   id: string;
   email: string;

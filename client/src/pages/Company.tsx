@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { CompanySearch } from '../components/CompanySearch';
 import type { Company as CompanyType, CompanyContact } from '../types';
 
 function CompanyContacts({ company, canEdit }: { company: CompanyType; canEdit: boolean }) {
@@ -313,52 +314,71 @@ export function Company() {
         </p>
       )}
 
+      {canEdit && (
+        <CompanySearch
+          onSelect={(result) => {
+            setName(result.name);
+            if (result.legalForm) setLegalForm(result.legalForm);
+            setSiren(result.siren);
+            if (result.siret) setSiret(result.siret);
+            if (result.vatNumber) setVatNumber(result.vatNumber);
+            if (result.address) setAddress(result.address);
+          }}
+        />
+      )}
+
       <form
         onSubmit={handleSubmit}
         className="grid grid-cols-1 gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:grid-cols-2"
       >
         <input
           autoFocus
-          disabled={!canEdit}
+          readOnly
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Raison sociale"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 sm:col-span-2 text-slate-900 placeholder:text-slate-400"
+          title="Renseigné via la recherche dans l'Annuaire des Entreprises"
+          className="rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:col-span-2 placeholder:text-slate-400"
         />
         <input
-          disabled={!canEdit}
+          readOnly
           value={legalForm}
           onChange={(e) => setLegalForm(e.target.value)}
           placeholder="Forme juridique (ex: SAS)"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 text-slate-900 placeholder:text-slate-400"
+          title="Renseigné via la recherche dans l'Annuaire des Entreprises"
+          className="rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 placeholder:text-slate-400"
         />
         <input
-          disabled={!canEdit}
+          readOnly
           value={siren}
           onChange={(e) => setSiren(e.target.value)}
           placeholder="SIREN"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 text-slate-900 placeholder:text-slate-400"
+          title="Renseigné via la recherche dans l'Annuaire des Entreprises"
+          className="rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 placeholder:text-slate-400"
         />
         <input
-          disabled={!canEdit}
+          readOnly
           value={siret}
           onChange={(e) => setSiret(e.target.value)}
           placeholder="SIRET"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 text-slate-900 placeholder:text-slate-400"
+          title="Renseigné via la recherche dans l'Annuaire des Entreprises"
+          className="rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 placeholder:text-slate-400"
         />
         <input
-          disabled={!canEdit}
+          readOnly
           value={vatNumber}
           onChange={(e) => setVatNumber(e.target.value)}
           placeholder="Numéro de TVA"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 text-slate-900 placeholder:text-slate-400"
+          title="Renseigné via la recherche dans l'Annuaire des Entreprises"
+          className="rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 placeholder:text-slate-400"
         />
         <input
-          disabled={!canEdit}
+          readOnly
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           placeholder="Adresse"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:bg-slate-50 text-slate-900 placeholder:text-slate-400"
+          title="Renseigné via la recherche dans l'Annuaire des Entreprises"
+          className="rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 placeholder:text-slate-400"
         />
         <input
           disabled={!canEdit}
