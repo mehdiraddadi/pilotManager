@@ -35,11 +35,26 @@ services:
       # Surcharge le DATABASE_URL de server/.env.production pour pointer
       # vers le conteneur "db" plutôt que vers localhost.
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+      # Les emails (confirmation d'inscription, factures...) sont capturés par MailCatcher.
+      SMTP_HOST: mailcatcher
+      SMTP_PORT: 1025
     # Pas de port exposé sur l'hôte : l'API n'est joignable que depuis le
     # conteneur "client" (Nginx), via le réseau interne Docker Compose.
     depends_on:
       db:
         condition: service_healthy
+      mailcatcher:
+        condition: service_started
+
+  # Capture tous les emails envoyés par l'API sans les délivrer. Interface web liée à
+  # 127.0.0.1 uniquement : elle affiche les liens de confirmation, elle ne doit pas être
+  # publique. Y accéder via un tunnel SSH (voir DEPLOY.md).
+  mailcatcher:
+    image: schickling/mailcatcher
+    container_name: pilotmanager-prod-mailcatcher
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${MAILCATCHER_PORT:-1080}:1080"
 
   client:
     build:

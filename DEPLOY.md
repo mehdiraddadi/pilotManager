@@ -54,8 +54,8 @@ CLIENT_PORT=8080
 - `JWT_SECRET` : générez une vraie valeur avec `openssl rand -base64 48`
 - `CLIENT_URL` : `http://VOTRE_IP:8080` (le port doit correspondre à
   `CLIENT_PORT` ci-dessus)
-- `SMTP_*` : laissez tel quel si vous n'avez pas encore de serveur mail en
-  prod (seuls les envois d'emails échoueront, le reste de l'app fonctionne)
+- `SMTP_FROM` : adresse d'expéditeur affichée. L'hôte et le port SMTP sont
+  imposés par `docker-compose.prod.yml` (conteneur MailCatcher, voir plus bas)
 
 Ces deux fichiers contiennent des secrets : ils sont dans `.gitignore`, ne
 les committez jamais.
@@ -79,13 +79,15 @@ Et si votre serveur IONOS a un firewall géré depuis le Cloud Panel / DCD
 ./deploy.sh
 ```
 
-Ce script build les images de prod (`docker-compose.prod.yml`) et démarre 3
+Ce script build les images de prod (`docker-compose.prod.yml`) et démarre 4
 conteneurs isolés de tout autre projet Docker sur la machine :
 - `pilotmanager-prod-db` (Postgres, pas de port exposé sur l'hôte)
 - `pilotmanager-prod-server` (API Node, pas de port exposé — uniquement
   joignable par le conteneur client, en interne)
 - `pilotmanager-prod-client` (Nginx : sert le build React + proxy `/api`
-  vers le serveur) — seul conteneur exposé, sur le port `CLIENT_PORT`
+  vers le serveur) — seul conteneur exposé publiquement, sur le port `CLIENT_PORT`
+- `pilotmanager-prod-mailcatcher` (capture les emails envoyés par l'API) —
+  interface web sur `127.0.0.1:MAILCATCHER_PORT` uniquement
 
 Les migrations Prisma sont appliquées automatiquement à chaque démarrage du
 conteneur serveur.
@@ -116,6 +118,24 @@ un navigateur — vous devez arriver sur la page de login.
 
 Vérifiez aussi que votre site PHP existant répond toujours normalement sur
 son port habituel (80/443) : ces conteneurs ne le touchent pas.
+
+## Emails (MailCatcher)
+
+Aucun email n'est réellement délivré : MailCatcher les capture tous (liens de
+confirmation d'inscription, envois de factures...). Pour les consulter depuis
+votre machine, ouvrez un tunnel SSH :
+
+```bash
+ssh -L 1080:127.0.0.1:1080 votre_user@VOTRE_IP
+```
+
+puis ouvrez `http://localhost:1080` dans votre navigateur. Ne publiez pas ce
+port dans le firewall : n'importe qui pourrait y lire les liens de
+confirmation et activer des comptes.
+
+Conséquence : un utilisateur qui s'inscrit ne reçoit pas son email de
+confirmation. C'est à vous de lui transmettre le lien depuis MailCatcher,
+jusqu'à la mise en place d'un vrai serveur SMTP.
 
 ## Mises à jour futures
 
