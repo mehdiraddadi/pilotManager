@@ -32,6 +32,12 @@ export interface CompanySearchResult {
   vatNumber: string | null;
 }
 
+export interface DashboardStats {
+  activeClients: number;
+  ongoingProjects: number;
+  staffedConsultants: number;
+}
+
 export interface User {
   id: string;
   email: string;

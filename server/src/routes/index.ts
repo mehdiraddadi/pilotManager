@@ -11,6 +11,7 @@ import contactRoutes from './contact.routes';
 import projectContactRoutes from './projectContact.routes';
 import companyRoutes from './company.routes';
 import companyContactRoutes from './companyContact.routes';
+import dashboardRoutes from './dashboard.routes';
 
 const router = Router();
 
@@ -30,6 +31,7 @@ router.use('/intermediaries', intermediaryRoutes);
 router.use('/contacts', contactRoutes);
 router.use('/project-contacts', projectContactRoutes);
 router.use('/company-contacts', companyContactRoutes);
+router.use('/dashboard', dashboardRoutes);
 
 // À venir : /candidates...
 

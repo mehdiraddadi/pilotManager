@@ -84,22 +84,25 @@ export async function searchCompanies(req: Request, res: Response) {
     res.json(results);
 }
 
-// Société unique (singleton applicatif) : renvoie null tant qu'elle n'a pas été configurée.
-export async function getCompany(_req: Request, res: Response) {
+// Société de l'utilisateur connecté : renvoie null tant qu'elle n'a pas été configurée.
+export async function getCompany(req: Request, res: Response) {
     const company = await prisma.company.findFirst({
+        where: { users: { some: { id: req.auth!.userId } } },
         include: { contacts: { orderBy: { createdAt: 'asc' } } },
     });
     res.json(company);
 }
 
 export async function createCompany(req: Request, res: Response) {
-    const existing = await prisma.company.findFirst();
+    const existing = await prisma.company.findFirst({ where: { users: { some: { id: req.auth!.userId } } } });
     if (existing) {
         throw new ApiError(409, 'La société est déjà configurée');
     }
 
     const data = companySchema.parse(req.body);
-    const company = await prisma.company.create({ data });
+    const company = await prisma.company.create({
+        data: { ...data, users: { connect: { id: req.auth!.userId } } },
+    });
     res.status(201).json(company);
 }
 

@@ -48,7 +48,9 @@ export async function createUser(req: Request, res: Response) {
     }
 
     const passwordHash = await bcrypt.hash(data.password, 10);
+    const creator = await prisma.user.findUnique({ where: { id: req.auth!.userId } });
 
+    // Compte créé par un administrateur : pas de confirmation d'email, rattaché à sa société.
     const user = await prisma.user.create({
         data: {
             email: data.email,
@@ -57,6 +59,8 @@ export async function createUser(req: Request, res: Response) {
             lastName: data.lastName,
             role: data.role,
             profile: data.profile,
+            emailVerified: true,
+            companyId: creator?.companyId,
         },
         select: { id: true, email: true, firstName: true, lastName: true, role: true, profile: true },
     });

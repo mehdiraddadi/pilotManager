@@ -16,6 +16,15 @@ export async function sendPasswordChangedEmail(to: string, firstName: string) {
     });
 }
 
+export async function sendEmailVerificationEmail(to: string, firstName: string, verifyUrl: string) {
+    await transporter.sendMail({
+        from: env.smtpFrom,
+        to,
+        subject: 'Confirmez votre adresse email Pilot Manager',
+        text: `Bonjour ${firstName},\n\nMerci pour votre inscription sur Pilot Manager. Pour activer votre compte, confirmez votre adresse email en ouvrant ce lien (valable 24 heures) :\n\n${verifyUrl}\n\nSi vous n'êtes pas à l'origine de cette inscription, ignorez simplement cet email.`,
+    });
+}
+
 interface InvoiceEmailInfo {
     number: string;
     periodLabel: string;

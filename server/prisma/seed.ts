@@ -23,6 +23,7 @@ async function main() {
       firstName: 'Admin',
       lastName: 'Boond',
       role: 'ADMIN',
+      emailVerified: true,
     },
   });
 

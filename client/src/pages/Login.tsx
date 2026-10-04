@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { api } from '../services/api';
 
 export function Login() {
   const { login } = useAuth();
@@ -9,19 +11,33 @@ export function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [unverified, setUnverified] = useState(false);
+  const [resent, setResent] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
+    setUnverified(false);
+    setResent(false);
     setSubmitting(true);
     try {
       await login(email, password);
       navigate('/');
-    } catch {
-      setError('Email ou mot de passe incorrect');
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.status === 403) {
+        setUnverified(true);
+        setError(err.response.data?.error ?? 'Email non confirmé');
+      } else {
+        setError('Email ou mot de passe incorrect');
+      }
     } finally {
       setSubmitting(false);
     }
+  }
+
+  async function resendVerification() {
+    await api.post('/auth/resend-verification', { email });
+    setResent(true);
   }
 
   return (
@@ -54,6 +70,17 @@ export function Login() {
         />
 
         {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+        {unverified && (
+          <p className="mb-4 text-sm text-slate-600">
+            {resent ? (
+              'Un nouveau lien vient de vous être envoyé.'
+            ) : (
+              <button type="button" onClick={resendVerification} className="font-medium text-teal-700 hover:underline">
+                Renvoyer l'email de confirmation
+              </button>
+            )}
+          </p>
+        )}
 
         <button
           type="submit"
@@ -62,6 +89,13 @@ export function Login() {
         >
           {submitting ? 'Connexion...' : 'Se connecter'}
         </button>
+
+        <p className="mt-6 text-center text-sm text-slate-500">
+          Pas encore de compte ?{' '}
+          <Link to="/register" className="font-medium text-teal-700 hover:underline">
+            Créer un compte
+          </Link>
+        </p>
       </form>
     </div>
   );

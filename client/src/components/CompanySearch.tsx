@@ -4,7 +4,13 @@ import type { CompanySearchResult } from '../types';
 
 // Recherche d'entreprise (nom, SIREN, SIRET, TVA) via l'Annuaire des Entreprises,
 // utilisé pour pré-remplir automatiquement un formulaire société/client.
-export function CompanySearch({ onSelect }: { onSelect: (result: CompanySearchResult) => void }) {
+export function CompanySearch({
+  onSelect,
+  endpoint = '/company/search',
+}: {
+  onSelect: (result: CompanySearchResult) => void;
+  endpoint?: string;
+}) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<CompanySearchResult[]>([]);
   const [open, setOpen] = useState(false);
@@ -24,7 +30,7 @@ export function CompanySearch({ onSelect }: { onSelect: (result: CompanySearchRe
     setSearching(true);
     const timeout = setTimeout(async () => {
       try {
-        const { data } = await api.get<CompanySearchResult[]>('/company/search', {
+        const { data } = await api.get<CompanySearchResult[]>(endpoint, {
           params: { q: trimmed },
         });
         setResults(data);
@@ -39,7 +45,7 @@ export function CompanySearch({ onSelect }: { onSelect: (result: CompanySearchRe
     }, 350);
 
     return () => clearTimeout(timeout);
-  }, [query]);
+  }, [query, endpoint]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {

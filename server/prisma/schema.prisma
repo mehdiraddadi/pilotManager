@@ -27,7 +27,8 @@ model Company {
   id        String   @id @default(uuid())
   name      String
   legalForm String?
-  siren     String?
+  // Unique : sert à vérifier à l'inscription qu'aucun compte n'existe déjà pour cette entreprise.
+  siren     String?  @unique
   siret     String?
   vatNumber String?
   address   String?
@@ -38,6 +39,7 @@ model Company {
   updatedAt DateTime @updatedAt
 
   contacts  CompanyContact[]
+  users     User[]
 
   @@map("company")
 }
@@ -64,6 +66,13 @@ model User {
   lastName     String
   role         Role     @default(CONSULTANT)
   profile      String?
+  companyId    String?
+  company      Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  // Inscription en libre-service : le compte reste inactif tant que l'email n'est pas confirmé.
+  // Seul le hash SHA-256 du jeton est stocké, le jeton en clair n'existe que dans l'email.
+  emailVerified              Boolean   @default(false)
+  emailVerificationTokenHash String?   @unique
+  emailVerificationExpiresAt DateTime?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

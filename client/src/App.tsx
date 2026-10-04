@@ -7,6 +7,8 @@ import { Clients } from './pages/Clients';
 import { Company } from './pages/Company';
 import { Dashboard } from './pages/Dashboard';
 import { Login } from './pages/Login';
+import { Register } from './pages/Register';
+import { VerifyEmail } from './pages/VerifyEmail';
 import { Resources } from './pages/Resources';
 import { Projects } from './pages/Projects';
 import { Intermediaries } from './pages/Intermediaries';
@@ -19,6 +21,8 @@ function App() {
     <AuthProvider>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route
           path="/*"
           element={

@@ -341,6 +341,7 @@ export async function exportInvoicePdf(req: Request, res: Response) {
     if (!invoice) throw new ApiError(404, 'Facture introuvable');
 
     const company = await prisma.company.findFirst({
+        where: { users: { some: { id: req.auth!.userId } } },
         include: { contacts: { orderBy: { createdAt: 'asc' } } },
     });
     if (!company) {
@@ -432,6 +433,7 @@ export async function previewInvoice(req: Request, res: Response) {
     const totalWithVat = totalAmount + vatAmount;
 
     const company = await prisma.company.findFirst({
+        where: { users: { some: { id: req.auth!.userId } } },
         include: { contacts: { orderBy: { createdAt: 'asc' } } },
     });
     if (!company) {

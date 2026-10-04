@@ -399,30 +399,30 @@ export function Timesheets() {
 
             {selectedUserId && (
                 <>
-                    <div className="mb-4 flex items-center justify-between rounded-xl border border-slate-200 bg-white px-5 py-4">
+                    <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-4 sm:px-5">
                         <div className="flex items-center gap-3">
                             <span className="text-sm font-medium text-slate-700">Activite normale</span>
                             <button
                                 onClick={() => setAbsenceModalOpen(true)}
                                 disabled={isLocked || !primaryAssignmentId}
                                 title={!primaryAssignmentId ? "Ce consultant n'a aucune affectation" : undefined}
-                                className="rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-40"
+                                className="whitespace-nowrap rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-40"
                             >
                                 + Ajouter une absence
                             </button>
                         </div>
                         <div className="flex items-center gap-3">
-              <span className="text-sm text-slate-600">
+              <span className="whitespace-nowrap text-sm text-slate-600">
                 {progressPct}% - {totalDeclared} / {joursOuvres} jours ouvres
               </span>
-                            <div className="h-2 w-40 overflow-hidden rounded-full bg-slate-100">
+                            <div className="h-2 w-20 overflow-hidden rounded-full bg-slate-100 sm:w-40">
                                 <div
                                     className="h-full rounded-full bg-teal-500 transition-all"
                                     style={{ width: `${Math.min(progressPct, 100)}%` }}
                                 />
                             </div>
                             <span
-                                className={`flex h-6 w-6 items-center justify-center rounded-full text-white ${
+                                className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-white ${
                                     progressPct >= 100 ? 'bg-teal-500' : 'bg-slate-300'
                                 }`}
                             >
@@ -435,14 +435,14 @@ export function Timesheets() {
                         <table className="text-xs">
                             <thead>
                             <tr>
-                                <th className="sticky left-0 z-10 min-w-[220px] border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-left font-medium text-slate-500">
+                                <th className="sticky left-0 z-10 min-w-[110px] border-b sm:min-w-[220px] border-r border-slate-200 bg-slate-50 px-3 py-2 text-left font-medium text-slate-500">
                                     &nbsp;
                                 </th>
                                 {days.map((d) => (
                                     <th
                                         key={d.dateStr}
                                         title={d.holidayLabel}
-                                        className={`w-8 border-b border-slate-200 py-1 text-center font-normal text-slate-400 ${
+                                        className={`w-8 min-w-8 border-b lg:min-w-0 border-slate-200 py-1 text-center font-normal text-slate-400 ${
                                             d.isHoliday ? 'bg-amber-100' : d.isWeekend ? 'bg-slate-100' : ''
                                         }`}
                                     >
@@ -454,7 +454,7 @@ export function Timesheets() {
                                 </th>
                             </tr>
                             <tr>
-                                <th className="sticky left-0 z-10 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-left text-xs font-medium text-slate-500">
+                                <th className="sticky left-0 z-10 border-b border-r border-slate-200 bg-slate-50 px-2 py-2 text-left text-xs font-medium text-slate-500 sm:px-3">
                                     Activite normale
                                 </th>
                                 {days.map((d) => (
@@ -479,7 +479,7 @@ export function Timesheets() {
                                 });
                                 return (
                                     <tr key={a.id} className="border-b border-slate-100 last:border-0">
-                                        <td className="sticky left-0 z-10 border-r border-slate-200 bg-white px-3 py-2 font-medium text-slate-900">
+                                        <td className="sticky left-0 z-10 max-w-[140px] border-r border-slate-200 bg-white px-2 py-2 font-medium text-slate-900 sm:max-w-none sm:px-3">
                                             {a.project?.name}
                                         </td>
                                         {days.map((d) => {
@@ -536,7 +536,7 @@ export function Timesheets() {
                                 });
                                 return (
                                     <tr key={t.value} className="border-b border-slate-100 last:border-0">
-                                        <td className="sticky left-0 z-10 border-r border-slate-200 bg-white px-3 py-2 text-slate-700">
+                                        <td className="sticky left-0 z-10 whitespace-nowrap border-r border-slate-200 bg-white px-2 py-2 text-slate-700 sm:px-3">
                                             <span className={`mr-2 inline-block h-2 w-2 rounded-full ${t.dot}`} />
                                             {t.label}
                                         </td>
@@ -568,7 +568,7 @@ export function Timesheets() {
                             })}
 
                             <tr className="border-t-2 border-slate-200 bg-slate-50">
-                                <td className="sticky left-0 z-10 border-r border-slate-200 bg-slate-50 px-3 py-2 font-medium text-slate-600">
+                                <td className="sticky left-0 z-10 border-r border-slate-200 bg-slate-50 px-2 py-2 font-medium text-slate-600 sm:px-3">
                                     TOTAL
                                 </td>
                                 {days.map((d) => (

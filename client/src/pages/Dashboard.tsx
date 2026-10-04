@@ -1,7 +1,15 @@
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
+import { api } from '../services/api';
+import type { DashboardStats } from '../types';
 
 export function Dashboard() {
   const { user } = useAuth();
+
+  const { data: stats } = useQuery({
+    queryKey: ['dashboard-stats'],
+    queryFn: async () => (await api.get<DashboardStats>('/dashboard/stats')).data,
+  });
 
   return (
     <div>
@@ -15,9 +23,9 @@ export function Dashboard() {
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
         {[
-          { label: 'Clients actifs', value: '—' },
-          { label: 'Projets en cours', value: '—' },
-          { label: 'Consultants staffés', value: '—' },
+          { label: 'Clients actifs', value: stats?.activeClients ?? '—' },
+          { label: 'Projets en cours', value: stats?.ongoingProjects ?? '—' },
+          { label: 'Consultants staffés', value: stats?.staffedConsultants ?? '—' },
         ].map((stat) => (
           <div key={stat.label} className="rounded-xl border border-slate-200 bg-white p-5">
             <p className="text-sm text-slate-500">{stat.label}</p>
